@@ -17,13 +17,11 @@
 #           ##############                             ###############
 #           ##########################################################
 
-require_relative 'Contact'
+require_relative "contact"
 
 # As a developer, I should implement the Rolodex class as an array that accepts new contacts.
 # As a developer, the rolodex class should have the following methods: add, modify_contact, display_all_contacts, display_particular_contact, display_info_by_attribute and delete_contact.
 
-
-@contacts.select { |contact| contact.name == name}
 class Rolodex
 
 	def initialize
@@ -43,40 +41,58 @@ class Rolodex
 		note = gets.chomp.downcase
 
 		contact = Contact.new(id, first_name, last_name, email, note)
-		@contact.push(contact)
+		@contacts.push(contact)
 		puts "\e[H\e[2J"
-        puts "#{first_name} #{last_name}, ID: #{contact.id} has been created!"
+        puts "#{first_name.capitalize} #{last_name.capitalize}, ID: #{contact.id} has been created!"
 	end
+
+
+
+    # @rolodex.add if user_selected == 1
+    # @rolodex.modify_contact if user_selected == 2
+    # @rolodex.delete_contact if user_selected == 3
+    # @rolodex.display_all_contacts if user_selected == 4
+    # @rolodex.display_info_by_attribute if user_selected == 5
+    # @rolodex.find_contact_by_id if user_selected == 6
+
+
 
 	def modify_existing_contact
 		puts "Add a contact attribute (first_name, last_name, email, notes) to be modified:"
-		user_attribute = gets.chomp
+		user_attribute = gets.chomp.to_s
 		puts "Are you sure? (y/n)"
 		user_confirm = gets.chomp.downcase
 
 		if user_confirm == "y"
 			puts "What would you like to change #{user_attribute} to?"
 			update = gets.chomp
-			contact.user_attribute = update
-
-			if user_confirm == "n"
+			contact.first_name = update if user_attribute == "first_name"
+			contact.last_name = update if user_attribute == "last_name"
+			contact.email = update if user_attribute == "email"
+			contact.note = update if user_attribute == "notes"
+			puts "#{user_attribute} was succesfully changed to #{update}."
+		elsif user_confirm == "n"
 				puts "Okay! Head back over to the main menu"
-				main_menu
-			end
+				CRA.main_menu
 		end
 	end
 
 	def find_contact(id)
-		@contact.each {|contact| return contact if contact.id == id}
+		@contacts.each {|contact| return contact if contact.id == id}
 	end
 
 	def display_all_contacts
-	end
+		@contacts.each do |contact|
+    		print "First name: #{contact.first_name.capitalize} \nlast name: #{contact.last_name.capitalize}\n Email: #{contact.email}\nNote: #{contact.note.capitalize}\nID: #{contact.id}"
+    	end
+    end
 
-	def display_particular_contact
+	def display_particular_contact(contact)
+		print "ID: #{contact.id}\nFirst: #{contact.first_name}\nLast: #{contact.last_name}\nEmail: #{contact.email}"
 	end
 
 	def display_info_by_attribute
+
 	end
 
 	def delete_contact
