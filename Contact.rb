@@ -11,7 +11,16 @@
 # As a user, if 'delete' is typed, I am prompted to enter an attribute value of the contact to be deleted.
 # As a user, if 'exit' is typed, I am exited out of the program and returned to the command line.
 
-class Contact
+
+#           ##########################################################
+#           ##############                             ###############
+#           ##############     LOAD RELEVANT FILES     ###############
+#           ##############                             ###############
+#           ##########################################################
+
+require_relative 'Runner'
+
+class CRM
 
 	def initialize (id, firstName, lastName, email, notes)
 		@id = id
@@ -21,22 +30,33 @@ class Contact
 		@notes = notes
 	end
 
-	def prompt
+	def print_main_menu
 		puts "Add, modify, display all, display contact, display attribute, delete or exit?"
-		@promptUser = gets.chomp
+	end
 
-		case @promptUser
+	def main_menu
+		print_main_menu
+		user_selected = gets.to_s.downcase
+		call_option(user_selected)
+	end
+
+	def call_option (user_response)
+		case user_response
 		when "add"
-			puts "First name: "
-			firstName = gets.chomp
-			puts "Last name: "
-			lastName = gets.chomp
-			puts "Email: "
-			email = gets.chomp
-			puts "Notes: "
-			notes = gets.chomp
-
+			add_new_contact
 		when "modify"
+			modify_existing_contact
+		when "display all"
+			display_all_contacts
+		when "display contact"
+			display_contact
+		when "delete"
+			delete_contact
+		when "exit"
+			self.main_menu
+		end
+	end
+
 			puts "Add a contact attribute (first name, last name, email, notes) to be modified!"
 			contactAttribute = gets.chomp
 			puts "Are you sure? (y/n)"
@@ -62,15 +82,16 @@ class Contact
 		when "delete"
 			puts "delete!"
 		when "exit"
-			puts "exit!"
+			return
 		else
 			puts "Please try again. Would you like to ----- "
 			self.prompt
 		end
+
 	end
 end
 
-Andrew = Contact.new
+Andrew = Contact.new(5, "Joe", "Shmo", "joe@email.com", "joe is smelly")
 Andrew.prompt
 
 
