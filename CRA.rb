@@ -43,12 +43,15 @@ class CRA
 			display_all_contacts
 		when "display contact"
 			display_contact
+		when "display attribute"
+			display_attribute
 		when "delete"
 			delete_contact
 		when "exit"
-			puts "Have a nice day!"
+			exit
 		else
-			puts "Your entry is not valid. Please try again."
+			puts "Please try again. Would you like to ----- "
+			main_menu
 		end
 	end
 
@@ -71,9 +74,7 @@ class CRA
 		user_confirm = gets.chomp.downcase
 
 		if user_confirm == "y"
-			puts "Would you like to change 'id', 'firstname', 'lastname' or 'email'?"
-			change = gets.chomp
-			puts "What would you like to change #{@change} to?"
+			puts "What would you like to change #{user_attribute} to?"
 			changeTo = gets.chomp
 		if user_confirm == "n"
 			puts "Okay! Head back over to the main menu"
@@ -81,25 +82,6 @@ class CRA
 		end
 	end
 
-	def self.display_all_contacts
-	end
-
-when "display all"
-	puts "display all!"
-when "display contact"
-	puts "display contact!"
-when "display attribute"
-	puts "disply attribute!"
-when "delete"
-	puts "delete!"
-when "exit"
-	return
-else
-	puts "Please try again. Would you like to ----- "
-	self.main_menu
-end
-
-end
 end
 
 
