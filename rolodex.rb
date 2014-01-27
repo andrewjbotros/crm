@@ -44,7 +44,7 @@ class Rolodex
 		contact = find_contact(id)
 
 		puts "Add a contact attribute (first name, last name, email, notes) to be modified:"
-		user_attribute = gets.chomp.to_s
+		user_attribute = gets.chomp.to_s.downcase
 		puts "Are you sure? (y/n)"
 		user_confirm = gets.chomp.downcase
 
@@ -86,9 +86,18 @@ class Rolodex
 	end
 
 	def display_info_by_attribute
+		puts "Which attribute (ID, first name, last name, email) would you like to display?"
+		user_attribute = gets.chomp.to_s.downcase
+		puts ""
+		@contacts.each do |contact|
+			puts contact.id if user_attribute.to_i == "id"
+			puts contact.first_name if user_attribute == "first name"
+			puts contact.last_name if user_attribute == "last name"
+			puts contact.email if user_attribute == "email"
+		end
 
-
-	end
+		CRA.main_menu
+   end
 
 	def delete_contact
 		puts "Which contact (id) would you like to delete?"
