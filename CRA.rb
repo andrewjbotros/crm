@@ -10,7 +10,6 @@ require_relative "contact"
 class CRA
 
 	@rolodex = Rolodex.new
-	@rolodex.add_new_contact
 
 	def self.print_main_menu
 		puts "Add, modify, display all, display contact, display attribute, delete or exit?"

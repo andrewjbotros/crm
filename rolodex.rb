@@ -1,16 +1,3 @@
-# As a user, I am presented with a prompt to 'add', 'modify', 'display all', 'display contact', display attribute', 'delete' and 'exit'.
-# As a user, if 'add' is typed, I am prompted to give my 'first name', 'last name', 'email' and 'notes'.
-# As a user, if 'modify' is typed, I am prompted to enter a contact attribute to be modified.
-# As a user, when an attribute is entered, I am prompted to type 'yes' or 'no' to confirm my selection.
-# As a user, if 'yes' is typed, I am prompted to change 'id', 'firstname', 'lastname' and 'email'.
-# As a user, when an attribute is entered, I am prompted to enter a new value for the attribute.
-# As a user, if 'no' is typed, I am returned back to the main menu.
-# As a user, if 'display all' is typed, I am shown all of the contacts that exist.
-# As a user, if 'display contact' is typed, I am shown a particular contact.
-# As a user, if 'display attribute' is typed, I am prompted to enter an attribute so that I can see all of the contacts according to that attribute.
-# As a user, if 'delete' is typed, I am prompted to enter an attribute value of the contact to be deleted.
-# As a user, if 'exit' is typed, I am exited out of the program and returned to the command line.
-
 #           ##########################################################
 #           ##############                             ###############
 #           ##############     LOAD RELEVANT FILES     ###############
@@ -29,36 +16,34 @@ class Rolodex
 		@id = 1000
 	end
 
+	def find_contact (user_id)
+		@contacts.each {|contact| return contact if contact.id == user_id}
+	end
+
 	def add_new_contact
-		id = @id + 1
+		@id += 1
 		puts "First name:"
-		first_name = gets.chomp.downcase
+		first_name = gets.chomp.downcase.capitalize
 		puts "Last name:"
-		last_name = gets.chomp.downcase
+		last_name = gets.chomp.downcase.capitalize
 		puts "Email:"
 		email = gets.chomp.downcase
 		puts "Notes:"
-		note = gets.chomp.downcase
+		note = gets.chomp.downcase.capitalize
 
-		contact = Contact.new(id, first_name, last_name, email, note)
+		contact = Contact.new(@id, first_name, last_name, email, note)
 		@contacts.push(contact)
 		puts "\e[H\e[2J"
-        puts "#{first_name.capitalize} #{last_name.capitalize}, ID: #{contact.id} has been created!"
+      puts "ID: #{contact.id} #{first_name} #{last_name} has been created successfully!"
+		CRA.main_menu
 	end
 
-
-
-    # @rolodex.add if user_selected == 1
-    # @rolodex.modify_contact if user_selected == 2
-    # @rolodex.delete_contact if user_selected == 3
-    # @rolodex.display_all_contacts if user_selected == 4
-    # @rolodex.display_info_by_attribute if user_selected == 5
-    # @rolodex.find_contact_by_id if user_selected == 6
-
-
-
 	def modify_existing_contact
-		puts "Add a contact attribute (first_name, last_name, email, notes) to be modified:"
+		puts "Which contact (ID) would you like to delete?"
+		id = gets.chomp.to_i
+		contact = find_contact(id)
+
+		puts "Add a contact attribute (first name, last name, email, notes) to be modified:"
 		user_attribute = gets.chomp.to_s
 		puts "Are you sure? (y/n)"
 		user_confirm = gets.chomp.downcase
@@ -66,36 +51,57 @@ class Rolodex
 		if user_confirm == "y"
 			puts "What would you like to change #{user_attribute} to?"
 			update = gets.chomp
-			contact.first_name = update if user_attribute == "first_name"
-			contact.last_name = update if user_attribute == "last_name"
+			contact.first_name = update if user_attribute == "first name"
+			contact.last_name = update if user_attribute == "last name"
 			contact.email = update if user_attribute == "email"
 			contact.note = update if user_attribute == "notes"
-			puts "#{user_attribute} was succesfully changed to #{update}."
+			print "#{user_attribute} was succesfully changed to #{update}.\n\n"
+			CRA.main_menu
 		elsif user_confirm == "n"
-				puts "Okay! Head back over to the main menu"
-				CRA.main_menu
+			puts "Okay! Head back over to the main menu"
+			CRA.main_menu
 		end
-	end
-
-	def find_contact(id)
-		@contacts.each {|contact| return contact if contact.id == id}
 	end
 
 	def display_all_contacts
 		@contacts.each do |contact|
-    		print "First name: #{contact.first_name.capitalize} \nlast name: #{contact.last_name.capitalize}\n Email: #{contact.email}\nNote: #{contact.note.capitalize}\nID: #{contact.id}"
+    		print "ID: #{contact.id}\nFirst name: #{contact.first_name}\nLast name: #{contact.last_name}\nEmail: #{contact.email}\nNote: #{contact.note}\n"
+    	end
+    	CRA.main_menu
+   end
+
+   def display_all_contacts_only
+		@contacts.each do |contact|
+    		print "ID: #{contact.id}\nFirst name: #{contact.first_name}\nLast name: #{contact.last_name}\nEmail: #{contact.email}\nNote: #{contact.note}\n"
     	end
     end
 
-	def display_particular_contact(contact)
-		print "ID: #{contact.id}\nFirst: #{contact.first_name}\nLast: #{contact.last_name}\nEmail: #{contact.email}"
+	def display_particular_contact
+		print "Which contact would you like to dispaly? (ID only) "
+		user_id = gets.chomp.to_i
+		puts ""
+		contact = find_contact(user_id)
+		puts "ID: #{contact.id}\nFirst name: #{contact.first_name}\nLast name: #{contact.last_name}\nEmail: #{contact.email}\nNotes: #{contact.note}"
+		CRA.main_menu
 	end
 
 	def display_info_by_attribute
 
+
 	end
 
 	def delete_contact
+		puts "Which contact (id) would you like to delete?"
+		id = gets.chomp.to_i
+		@contacts.each do |contact|
+    		if contact.id == id
+    			@contacts.delete(contact)
+    			puts "ID: #{id} has been successfully deleted."
+    		else
+    			puts "Sorry, that ID does not exist."
+    		end
+    	end
+    	CRA.main_menu
 	end
 
 end

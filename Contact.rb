@@ -15,7 +15,7 @@ class Contact
 		@note = note
 	end
 
-	def display
+	def self.display
 		print "ID: #{@id}\nFirst name: #{@first_name}\nLast name: #{@last_name}\nEmail: #{@email}\nNotes: #{@notes}"
 	end
 end
